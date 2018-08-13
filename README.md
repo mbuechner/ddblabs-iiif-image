@@ -1,8 +1,8 @@
-# DDB2018: IIIF Image Server - A IIIF server for DDB images based on 
+# DDB2018: IIIF Image Server - A IIIF server for DDB images based on Cantaloupe
 This is a Docker container with a configured [Cantaloupe](https://github.com/medusa-project/cantaloupe/) IIIF Image server. The server will download DDB image on-demand from the DDB-API and deliver a precessed derivate. Note, that will take some time, so it's not a very fast service and for developing and testing only.
 
 ## Docker (Docker Hub registry)
-Pull `iiif-image-dev` from Docker Hub registry:
+Pull `iiif-image-dev` from [Docker Hub registry](https://hub.docker.com/r/ddblabs/iiif-image/):
 ```
 docker pull ddblabs/iiif-image-dev
 ```
