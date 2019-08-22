@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-ARG ctl_ver=4.0
+ARG ctl_ver=4.1.3
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 
 #
@@ -21,7 +21,7 @@ RUN add-apt-repository -y ppa:git-core/ppa
 
 RUN  apt-get -y update && apt-get -y upgrade
 
-RUN apt-get -y install curl wget unzip nano git=1:2.18.*
+RUN apt-get -y install curl wget unzip nano git
 RUN apt-get -y install oracle-java8-installer && \
   apt-get -y install oracle-java8-unlimited-jce-policy && \
   apt-get -y install oracle-java8-set-default
