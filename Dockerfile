@@ -1,5 +1,5 @@
 FROM openjdk:8
-ARG ctl_ver=4.1.4
+ARG ctl_ver=4.1.3
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 
 ENV DEBIAN_FRONTEND noninteractive
