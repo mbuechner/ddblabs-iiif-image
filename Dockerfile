@@ -1,39 +1,32 @@
-FROM openjdk:8
-ARG ctl_ver=4.1.3
+FROM debian:buster
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV CANTALOUPE_VERSION=4.1.5
 
-RUN apt-get clean
-RUN apt-get update -y 
-RUN apt-get -y upgrade
-RUN apt-get -y install dialog apt-utils software-properties-common \
-	locales imagemagick wget unzip curl wget unzip nano
-	
-# RUN locale-gen en_US.UTF-8
-# ENV LANG en_US.UTF-8
-# ENV LANGUAGE en_US.UTF-8
-# ENV LC_ALL en_US.UTF-8
+# Update packages and install tools
+RUN apt-get update -qy && apt-get dist-upgrade -qy && \
+    apt-get install -qy --no-install-recommends curl imagemagick \
+    libopenjp2-tools ffmpeg unzip default-jre-headless && \
+    apt-get -qqy autoremove && apt-get -qqy autoclean
 
-# VOLUME /imageroot
+# Run non privileged
+RUN adduser --system cantaloupe
 
 # Get and unpack Cantaloupe release archive
-RUN wget https://github.com/medusa-project/cantaloupe/releases/download/v${ctl_ver}/Cantaloupe-${ctl_ver}.zip \
-  && unzip Cantaloupe-${ctl_ver}.zip \
-  && rm Cantaloupe-${ctl_ver}.zip
-
-ENV JAI_PKG jai-1_1_3-lib-linux-amd64
-RUN wget -q -O - "http://download.java.net/media/jai/builds/release/1_1_3/$JAI_PKG.tar.gz" | \
-  tar xz -C /tmp \
-  && cp /tmp/jai-1_1_3/lib/*.jar $JAVA_HOME/jre/lib/ext/ \
-  && cp /tmp/jai-1_1_3/lib/*.so $JAVA_HOME/jre/lib/amd64/
+RUN curl --silent --fail -OL https://github.com/medusa-project/cantaloupe/releases/download/v$CANTALOUPE_VERSION/Cantaloupe-$CANTALOUPE_VERSION.zip \
+    && unzip Cantaloupe-$CANTALOUPE_VERSION.zip \
+    && ln -s cantaloupe-$CANTALOUPE_VERSION cantaloupe \
+    && rm Cantaloupe-$CANTALOUPE_VERSION.zip \
+    && mkdir -p /var/log/cantaloupe /var/cache/cantaloupe \
+    && chown -R cantaloupe /cantaloupe /var/log/cantaloupe /var/cache/cantaloupe \
+    && cp -rs /cantaloupe/deps/Linux-x86-64/* /usr/
 
 RUN rm -rf /tmp/*
+COPY cantaloupe.properties cantaloupe/
+RUN chmod 644 /cantaloupe/cantaloupe.properties
 
-COPY cantaloupe.properties cantaloupe-${ctl_ver}
+USER cantaloupe
 
-WORKDIR cantaloupe-${ctl_ver}
+EXPOSE 8182
+CMD ["sh", "-c", "java -Dcantaloupe.config=/cantaloupe/cantaloupe.properties -jar /cantaloupe/cantaloupe-$CANTALOUPE_VERSION.war"]
 
-ENV CTL_VER ${ctl_ver}
-EXPOSE 80
-CMD ["sh", "-c", "java -Dcantaloupe.config=cantaloupe.properties -Xmx2g -jar cantaloupe-${CTL_VER}.war"]
