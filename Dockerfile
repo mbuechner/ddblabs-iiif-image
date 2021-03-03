@@ -1,7 +1,7 @@
 FROM debian:buster
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 
-ENV CANTALOUPE_VERSION=4.1.5
+ENV CANTALOUPE_VERSION=4.1.7
 
 # Update packages and install tools
 RUN apt-get update -qy && apt-get dist-upgrade -qy && \
