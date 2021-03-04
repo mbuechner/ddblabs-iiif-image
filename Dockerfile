@@ -19,10 +19,8 @@ RUN unzip v$CANTALOUPE_VERSION.zip
 
 WORKDIR /tmp/cantaloupe-$CANTALOUPE_VERSION/
 RUN sed -i 's|context.setContextPath("/");|context.setContextPath(System.getenv("PATH_PREFIX") != null ? System.getenv("PATH_PREFIX") : "/");|g' src/main/java/edu/illinois/library/cantaloupe/ApplicationServer.java
-RUN sed -i 's|</addDefaultSpecificationEntries>|</addDefaultSpecificationEntries><argLine>-Xmx1G</argLine>|g' pom.xml
+ENV MAVEN_OPTS=-Xmx1G
 RUN mvn package -Dmaven.test.skip=true
-ENV MAVEN_OPTS="-Xms512m -Xmx1G -XX:MaxPermSize=128m"
-RUN env
 RUN mv target/cantaloupe-$CANTALOUPE_VERSION.zip /
 
 WORKDIR /
