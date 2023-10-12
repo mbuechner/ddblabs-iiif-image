@@ -19,6 +19,9 @@ RUN unzip v$CANTALOUPE_VERSION.zip
 
 WORKDIR /tmp/cantaloupe-$CANTALOUPE_VERSION/
 RUN sed -i 's|context.setContextPath("/");|context.setContextPath(System.getenv("PATH_PREFIX") != null ? System.getenv("PATH_PREFIX") : "/");|g' src/main/java/edu/illinois/library/cantaloupe/ApplicationServer.java
+RUN sed -i 's|= "/iiif/1";|= "/1";|g' src/main/java/edu/illinois/library/cantaloupe/resource/Route.java
+RUN sed -i 's|= "/iiif/2";|= "/2";|g' src/main/java/edu/illinois/library/cantaloupe/resource/Route.java
+RUN sed -i 's|= "/iiif/3";|= "/3";|g' src/main/java/edu/illinois/library/cantaloupe/resource/Route.java
 ENV MAVEN_OPTS=-Xmx1G
 RUN mvn package -Dmaven.test.skip=true
 RUN mv target/cantaloupe-$CANTALOUPE_VERSION.zip /
