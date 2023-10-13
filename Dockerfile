@@ -40,4 +40,4 @@ RUN chmod 644 /cantaloupe-$CANTALOUPE_VERSION/cantaloupe.properties
 USER cantaloupe
 
 EXPOSE 8182
-CMD ["sh", "-c", "java -Dcantaloupe.config=/cantaloupe-$CANTALOUPE_VERSION/cantaloupe.properties -jar /cantaloupe-$CANTALOUPE_VERSION/cantaloupe-$CANTALOUPE_VERSION.jar"]
+CMD ["sh", "-c", "java -Xms512M -Xmx2G -Dcantaloupe.config=/cantaloupe-$CANTALOUPE_VERSION/cantaloupe.properties -jar /cantaloupe-$CANTALOUPE_VERSION/cantaloupe-$CANTALOUPE_VERSION.jar"]
