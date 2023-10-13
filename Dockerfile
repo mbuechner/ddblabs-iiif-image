@@ -25,6 +25,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get -qqy autoremove && apt-get -qqy autoclean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install TurboJpegProcessor dependencies
+RUN mkdir -p /opt/libjpeg-turbo/lib
+COPY libjpeg-turbo/lib64 /opt/libjpeg-turbo/lib
+
 # Run non privileged
 RUN adduser --system cantaloupe
 
