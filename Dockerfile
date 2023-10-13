@@ -1,13 +1,29 @@
 FROM debian:buster
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 
+ARG DEBIAN_FRONTEND=noninteractive
 ENV CANTALOUPE_VERSION=5.0.5
 
 # Update packages and install tools
-RUN apt-get update -qy && apt-get dist-upgrade -qy && \
-    apt-get install -qy --no-install-recommends curl imagemagick maven \
-    libopenjp2-tools ffmpeg unzip default-jre-headless openjdk-11-jdk && \
-    apt-get -qqy autoremove && apt-get -qqy autoclean
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        openjdk-11-jdk-headless \
+        ffmpeg \
+        maven \
+        curl \
+        wget \
+        libopenjp2-tools \
+        liblcms2-dev \
+        libpng-dev \
+        libzstd-dev \
+        libtiff-dev \
+        libjpeg-dev \
+        libjpeg62-turbo \
+        zlib1g-dev \
+        unzip \
+        libwebp-dev \
+        libimage-exiftool-perl && \
+    apt-get -qqy autoremove && apt-get -qqy autoclean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Run non privileged
 RUN adduser --system cantaloupe

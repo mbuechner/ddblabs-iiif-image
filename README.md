@@ -19,5 +19,5 @@ docker build -t iiif-image-dev .
 ```
 Next step is to start the container. Jetty within the container will listen on port 80. If the containers outside port shall be 80 too, run:
 ```
-docker run -p 80:80 -it iiif-image-dev iiif-image-dev
+docker run -p 8182:8182 -it iiif-image-dev
 ```
